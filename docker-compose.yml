@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    environment:
+      WORKOUT_DATASOURCE_URL: ${WORKOUT_DATASOURCE_URL}
+      WORKOUT_DB_USER: ${WORKOUT_DB_USER}
+      WORKOUT_DB_PASSWORD: ${WORKOUT_DB_PASSWORD}
+      TELEGRAM_TOKEN: ${TELEGRAM_TOKEN}
+    restart: unless-stopped
+    depends_on:
+      - db
+    ports:
+      - "8090:8080"
+
+  db:
+    image: postgres:16.1-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: workoutdb
+      POSTGRES_USER: ${WORKOUT_DB_USER}
+      POSTGRES_PASSWORD: ${WORKOUT_DB_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+
+volumes:
+  pgdata:
