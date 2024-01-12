@@ -9,10 +9,14 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    env:
+      WORKOUT_DATASOURCE_URL: jdbc:postgresql://db:5432/dummy
+      WORKOUT_DB_USER: dummy
+      WORKOUT_DB_PASSWORD: dummy
     steps:
       - uses: actions/checkout@v4
-#      - name: Print environment variables
-#        run: env
+      - name: Print environment variables
+        run: env
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
