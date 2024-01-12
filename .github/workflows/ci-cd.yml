@@ -15,6 +15,10 @@ jobs:
 #        todo: delete after debug!!
       - name: Print environment variables
         run: env
+      - name: Print Docker info
+        run: |
+        docker --version
+        docker info
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
