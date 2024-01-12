@@ -40,8 +40,8 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: Push Docker image to Docker Hub
-        run: docker push workoutbot:latest
-        #run: docker push pw0k/workoutbot:latest
+#        run: docker push workoutbot:latest
+        run: docker push pw0k/workoutbot:latest
 
       - name: Deploy to Server
         uses: appleboy/ssh-action@master
