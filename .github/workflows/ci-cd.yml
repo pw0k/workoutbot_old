@@ -41,14 +41,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-#      - name: Build and push
-#        uses: docker/build-push-action@v5
-#        with:
-#          push: true
-#          tags: pw0k/workoutbot:latest
-
       - name: Push Docker image to Docker Hub
-      #  run: docker push workoutbot:latest
         run: docker push pw0k/workoutbot:latest
 
       - name: Deploy to Server
@@ -58,5 +51,9 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
+            mkdir -p /opt/workoutbot
+            cd /opt/workoutbot
             docker pull workoutbot:latest
             docker-compose up -d
+        env:
+          DEBUG: true
