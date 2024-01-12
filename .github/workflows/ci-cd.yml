@@ -8,7 +8,6 @@ on:
 
 jobs:
   build-and-deploy:
-   # runs-on: ubuntu-20:04
     runs-on: ubuntu-latest
     env:
       WORKOUT_DATASOURCE_URL: jdbc:postgresql://localhost:5432/workoutdb
@@ -42,6 +41,7 @@ jobs:
 
       - name: Push Docker image to Docker Hub
         run: docker push workoutbot:latest
+        #run: docker push pw0k/workoutbot:latest
 
       - name: Deploy to Server
         uses: appleboy/ssh-action@master
