@@ -26,29 +26,20 @@ class VideoRepositoryTest {
     @Container
     private static final PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>("postgres:16.1");
 
-//    static {
-//        postgresContainer.start();
-//        System.setProperty("spring.datasource.url", postgresContainer.getJdbcUrl());
-//        System.setProperty("spring.datasource.username", postgresContainer.getUsername());
-//        System.setProperty("spring.datasource.password", postgresContainer.getPassword());
-//    }
-
     @DynamicPropertySource
     static void databaseProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", postgresContainer::getJdbcUrl);
         registry.add("spring.datasource.username", postgresContainer::getUsername);
         registry.add("spring.datasource.password", postgresContainer::getPassword);
     }
-//
-//
-//    @Autowired
-//    private VideoRepository videoRepository;
-//    @Autowired
-//    private WorkoutUserRepository workoutUserRepository;
 
     @Test
     void test() {
-        System.out.println(111);
+        System.out.println("UniqIdFindMe");
+        System.out.println("JDBC URL: " + postgresContainer.getJdbcUrl());
+        System.out.println("Username: " + postgresContainer.getUsername());
+        System.out.println("Password: " + postgresContainer.getPassword());
+        // your test code
     }
 //    @Test
 //    void containerStartsAndIsHealthy() {
