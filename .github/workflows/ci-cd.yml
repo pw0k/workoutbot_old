@@ -28,10 +28,14 @@ jobs:
           cache: 'gradle'
 
       - name: Build with Gradle
-        run: ./gradlew build --info
+        run: ./gradlew build
 
-      - name: Build Docker image
-        run: docker build -t workoutbot:latest .
+      - name: Build Docker Image
+        run: ./gradlew bootBuildImage
+
+
+      #      - name: Build Docker image
+#        run: docker build -t workoutbot:latest .
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v1
@@ -40,8 +44,8 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: Push Docker image to Docker Hub
-#        run: docker push workoutbot:latest
-        run: docker push pw0k/workoutbot:latest
+        run: docker push workoutbot:latest
+#        run: docker push pw0k/workoutbot:latest
 
       - name: Deploy to Server
         uses: appleboy/ssh-action@master
