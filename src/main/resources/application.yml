@@ -1,6 +1,7 @@
 spring:
   datasource:
-    url: ${WORKOUT_DATASOURCE_URL}
+    url: jdbc:postgresql://localhost:5432/workoutdb
+#    url: ${WORKOUT_DATASOURCE_URL}
     username: ${WORKOUT_DB_USER}
     password: ${WORKOUT_DB_PASSWORD}
   jpa:
