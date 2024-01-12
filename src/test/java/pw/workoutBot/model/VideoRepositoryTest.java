@@ -10,6 +10,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import pw.workoutBot.dto.VideoStatistic;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -23,13 +24,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class VideoRepositoryTest {
 
     @Container
-    private static final PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>("postgres:16.1");
+    private static final PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>("postgres:16.1")
+            .withMinimumRunningDuration(Duration.ofSeconds(5));
 
     @Autowired
     VideoRepository videoRepository;
     @Autowired
     WorkoutUserRepository workoutUserRepository;
-
 
     @DynamicPropertySource
     static void databaseProperties(DynamicPropertyRegistry registry) {
