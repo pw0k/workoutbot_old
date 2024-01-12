@@ -16,7 +16,9 @@ jobs:
       TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
       TELEGRAM_TEST_CHAT: 666
     steps:
-      - uses: actions/checkout@v4
+      - name: checkout
+        uses: actions/checkout@v4
+
       - name: Print environment variables
         run: env
 
@@ -30,21 +32,23 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
-      - name: Build Docker Image
-        run: ./gradlew bootBuildImage
-
-
-      #      - name: Build Docker image
-#        run: docker build -t workoutbot:latest .
+     # - name: Build Docker Image
+     #   run: ./gradlew bootBuildImage
 
       - name: Log in to Docker Hub
-        uses: docker/login-action@v1
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Push Docker image to Docker Hub
-        run: docker push workoutbot:latest
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: pw0k/workoutbot:latest
+
+      #- name: Push Docker image to Docker Hub
+      #  run: docker push workoutbot:latest
 #        run: docker push pw0k/workoutbot:latest
 
       - name: Deploy to Server
