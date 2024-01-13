@@ -30,6 +30,7 @@ WORKOUT_DB_USER=your_database_username
 WORKOUT_DB_PASSWORD=your_database_password
 TELEGRAM_TOKEN=your_telegram_bot_token
 TELEGRAM_TEST_CHAT=TELEGRAM_TEST_CHAT
+TELEGRAM_GENERAL_CHAT=TELEGRAM_GENERAL_CHAT
 ```
 
 Replace jdbc:postgresql://db:5432/workoutdb, myuser, mypassword, and your_telegram_bot_token

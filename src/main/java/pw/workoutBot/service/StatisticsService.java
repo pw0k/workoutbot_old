@@ -1,8 +1,8 @@
 package pw.workoutBot.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import pw.workoutBot.config.BotProperties;
 import pw.workoutBot.dto.VideoStatistic;
 import pw.workoutBot.model.VideoRepository;
 
@@ -17,8 +17,7 @@ public class StatisticsService {
 
     private final VideoRepository videoRepository;
     private final TelegramBot telegramBot;
-    @Value("${telegram.testChat}")
-    private String token;
+    private final BotProperties botProperties;
 
     public List<VideoStatistic> calculateStatistics(LocalDateTime startDateTime, LocalDateTime endDateTime) {
         return videoRepository.findVideoCountByUserBetweenDates(startDateTime, endDateTime)
@@ -29,22 +28,26 @@ public class StatisticsService {
 
     //todo: need to make the messages more readable.
     //todo: and add tests for logic later ...
-    public void calculateWeeklyStatistics() {
+    public void calculateWeeklyStatistics(Long chatId) {
         LocalDate nextSunday = LocalDate.now().with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
         LocalDateTime endOfWeek = LocalDateTime.of(nextSunday, LocalTime.of(13, 0));
         LocalDateTime startOfWeek = endOfWeek.minusDays(7);
         List<VideoStatistic> statistics = calculateStatistics(startOfWeek, endOfWeek);
-        telegramBot.sendMessage(token, "Stat for Week:\n" + convertMsg(statistics));
+        telegramBot.sendMessage(chatId, "Stat for Week:\n" + convertMsg(statistics));
     }
 
-    public void calculateMonthlyStatistics() {
+    public void calculateMonthlyStatistics(Long chatId) {
         LocalDateTime startOfMonth = YearMonth.now().atDay(1).atStartOfDay();
         LocalDateTime endOfMonth = YearMonth.now().atEndOfMonth().atTime(23, 59, 59);
         List<VideoStatistic> statistics = calculateStatistics(startOfMonth, endOfMonth);
-        telegramBot.sendMessage(token, "Stat for Month:\n" + convertMsg(statistics));
+        telegramBot.sendMessage(chatId, "Stat for Month:\n" + convertMsg(statistics));
     }
 
-    private String convertMsg(List<VideoStatistic> statistics){
+    public void calculateWeeklyStatisticsForTestChat() {
+        calculateMonthlyStatistics(botProperties.getTestChat());
+    }
+
+    private String convertMsg(List<VideoStatistic> statistics) {
         StringBuilder sb = new StringBuilder();
         for (var stat : statistics) {
             sb.append(stat.getUsername())

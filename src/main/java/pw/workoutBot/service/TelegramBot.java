@@ -1,15 +1,13 @@
 package pw.workoutBot.service;
 
-import jakarta.annotation.PostConstruct;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import pw.workoutBot.config.BotProperties;
 import pw.workoutBot.model.Video;
 import pw.workoutBot.model.WorkoutUser;
 
@@ -20,30 +18,27 @@ import java.util.Set;
 @Slf4j
 public class TelegramBot extends TelegramLongPollingCommandBot {
 
-    @Value("${telegram.botName}")
-    private String botName;
-    @Value("${telegram.token}")
-    private String token;
+    private final BotProperties botProperties;
     private final List<BotCommand> botCommands;
     private final TelegramDbService telegramDbService;
-    Set<Long> chatIds = Set.of(-4034880397L);
+    private final Set<Long> chatIds;
 
-    public TelegramBot(List<BotCommand> botCommands, TelegramDbService telegramDbService) {
+    public TelegramBot(BotProperties botProperties,
+                       List<BotCommand> botCommands,
+                       TelegramDbService telegramDbService) {
         super();
         this.botCommands = botCommands;
-        if (botCommands.isEmpty()) log.error("Bot commands are missing!");
-        botCommands.forEach(this::register);
         this.telegramDbService = telegramDbService;
-    }
-
-    @PostConstruct
-    public void init() {
+        this.botProperties = botProperties;
+        if (botCommands.isEmpty()) {
+            log.error("Bot commands are missing!");
+        }
+        this.chatIds = Set.of(botProperties.getGeneralChat(), botProperties.getTestChat());
         botCommands.forEach(this::register);
     }
 
-    //todo like for video, to check for anomalous too
+    // todo like for video, to check for anomalous too
     // (after api updated to tg api 7.0, for now 6.8)
-    @SneakyThrows
     @Override
     public void processNonCommandUpdate(Update update) {
         if (update.hasMessage()) {
@@ -65,9 +60,9 @@ public class TelegramBot extends TelegramLongPollingCommandBot {
         }
     }
 
-    public void sendMessage(String chatId, String message) {
+    public void sendMessage(Long chatId, String message) {
         SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(chatId);
+        sendMessage.setChatId(chatId.toString());
         sendMessage.setText(message);
         try {
             execute(sendMessage);
@@ -78,12 +73,12 @@ public class TelegramBot extends TelegramLongPollingCommandBot {
 
     @Override
     public String getBotUsername() {
-        return botName;
+        return botProperties.getBotName();
     }
 
     @Override
     public String getBotToken() {
-        return token;
+        return botProperties.getToken();
     }
 
     private WorkoutUser getUser(Update update) {

@@ -15,6 +15,6 @@ public class StatisticsController {
 
     @GetMapping("/monthly")
     public void getMonthlyStatistics() {
-        statisticsService.calculateMonthlyStatistics();
+        statisticsService.calculateWeeklyStatisticsForTestChat();
     }
 }
