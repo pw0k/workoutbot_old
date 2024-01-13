@@ -57,6 +57,7 @@ jobs:
             cd /opt/workoutbot
             
             # Create .env file from GitHub Secrets
+            rm -rf .env
             echo "WORKOUT_DATASOURCE_URL=${{ secrets.WORKOUT_DATASOURCE_URL }}" >> .env
             echo "WORKOUT_DB_USER=${{ secrets.WORKOUT_DB_USER }}" >> .env
             echo "WORKOUT_DB_PASSWORD=${{ secrets.WORKOUT_DB_PASSWORD }}" >> .env
