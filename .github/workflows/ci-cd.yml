@@ -15,6 +15,7 @@ jobs:
       WORKOUT_DB_PASSWORD: dummy
       TELEGRAM_TOKEN: TELEGRAM_TOKEN
       TELEGRAM_TEST_CHAT: TELEGRAM_TEST_CHAT
+      TELEGRAM_GENERAL_CHAT: TELEGRAM_GENERAL_CHAT
     steps:
       - name: checkout
         uses: actions/checkout@v4
