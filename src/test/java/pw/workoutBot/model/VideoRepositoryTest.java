@@ -3,6 +3,8 @@ package pw.workoutBot.model;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.telegram.telegrambots.meta.TelegramBotsApi;
 import pw.workoutBot.dto.VideoStatistic;
 
 import java.time.LocalDate;
@@ -17,9 +19,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class VideoRepositoryTest extends AbstractPostgresContainer{
 
     @Autowired
-    VideoRepository videoRepository;
+    private VideoRepository videoRepository;
     @Autowired
-    WorkoutUserRepository workoutUserRepository;
+    private WorkoutUserRepository workoutUserRepository;
+    @MockBean
+    private TelegramBotsApi mockTelegramBotsApi;
 
     @Test
     void test() {

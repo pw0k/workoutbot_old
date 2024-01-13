@@ -12,7 +12,6 @@ services:
       - db
     ports:
       - "8090:8080"
-
   db:
     image: postgres:16.1-alpine
     restart: unless-stopped
