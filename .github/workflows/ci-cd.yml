@@ -29,6 +29,7 @@ jobs:
           distribution: 'zulu'
           cache: 'gradle'
 
+      # https://paketo.io/docs/reference/java-reference/
       - name: Build with Gradle
         run: ./gradlew build
 
