@@ -64,7 +64,7 @@ jobs:
             
             curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -O https://github.com/pw0k/workoutbot/blob/main/docker-compose.yml
             
-            docker pull workoutbot:latest
+            docker pull pw0k/workoutbot:latest
             docker-compose up -d
         env:
           DEBUG: true
