@@ -3,11 +3,8 @@ services:
   app:
     #build: .
     image: pw0k/workoutbot:latest
-    #deploy:
-    #  resources:
-    #    limits:
-    #      memory: 512M
     environment:
+      JAVA_TOOL_OPTIONS: -Xmx300M -Xms300M -XX:MaxDirectMemorySize=10M -XX:MaxMetaspaceSize=64M -XX:ReservedCodeCacheSize=64M -Xss256K
       WORKOUT_DATASOURCE_URL: ${WORKOUT_DATASOURCE_URL}
       WORKOUT_DB_USER: ${WORKOUT_DB_USER}
       WORKOUT_DB_PASSWORD: ${WORKOUT_DB_PASSWORD}
