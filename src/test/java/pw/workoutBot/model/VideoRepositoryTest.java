@@ -22,6 +22,7 @@ class VideoRepositoryTest extends AbstractPostgresContainer{
     private VideoRepository videoRepository;
     @Autowired
     private WorkoutUserRepository workoutUserRepository;
+    //for using fake TELEGRAM_TOKEN in ci/cd
     @MockBean
     private TelegramBotsApi mockTelegramBotsApi;
 
