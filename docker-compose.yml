@@ -3,6 +3,10 @@ services:
   app:
     #build: .
     image: pw0k/workoutbot:latest
+    deploy:
+      resources:
+        limits:
+          memory: 384M
     environment:
       WORKOUT_DATASOURCE_URL: ${WORKOUT_DATASOURCE_URL}
       WORKOUT_DB_USER: ${WORKOUT_DB_USER}

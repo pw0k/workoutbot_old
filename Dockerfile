@@ -4,7 +4,9 @@ FROM openjdk:17-jdk-alpine
 # Add Maintainer Info
 LABEL maintainer="pw"
 
-ENV JAVA_OPTS="-XX:MaxDirectMemorySize=64M -XX:MaxMetaspaceSize=96M -XX:ReservedCodeCacheSize=64M -Xss256K"
+#ENV JAVA_OPTS="-XX:MaxDirectMemorySize=64M -XX:MaxMetaspaceSize=96M -XX:ReservedCodeCacheSize=64M -Xss256K"
+ENV JAVA_OPTS="-XX:MaxDirectMemorySize=10M -XX:MaxMetaspaceSize=96M -XX:ReservedCodeCacheSize=64M -Xss256K"
+
 
 # Add a volume pointing to /tmp
 VOLUME /tmp
