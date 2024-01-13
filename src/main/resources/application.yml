@@ -3,13 +3,18 @@ spring:
     url: ${WORKOUT_DATASOURCE_URL}
     username: ${WORKOUT_DB_USER}
     password: ${WORKOUT_DB_PASSWORD}
-  jpa:
+    #trying to optimize memory
+    hikari:
+      maximum-pool-size: 5
     #show-sql: true
-    hibernate:
-      ddl-auto: validate
+    #hibernate:
+    #  ddl-auto: validate
+  jpa:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  main:
+    lazy-initialization: true
   liquibase:
     change-log: classpath:db/changelog.sql
 
@@ -18,3 +23,8 @@ telegram:
   token: ${TELEGRAM_TOKEN}
   testChat: ${TELEGRAM_TEST_CHAT}
 
+#trying to optimize memory
+server:
+  tomcat:
+    threads:
+      max: 10
