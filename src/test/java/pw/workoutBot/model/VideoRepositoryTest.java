@@ -27,15 +27,6 @@ class VideoRepositoryTest extends AbstractPostgresContainer{
     private TelegramBotsApi mockTelegramBotsApi;
 
     @Test
-    void test() {
-        System.out.println("UniqIdFindMe");
-        System.out.println("JDBC URL: " + postgresContainer.getJdbcUrl());
-        System.out.println("Username: " + postgresContainer.getUsername());
-        System.out.println("Password: " + postgresContainer.getPassword());
-        // your test code
-    }
-
-    @Test
     public void testFindVideoCountByUserBetweenDates() {
         // Given
         WorkoutUser user1 = createAndSaveUser("user1");
