@@ -31,16 +31,9 @@ with your actual PostgreSQL database details and Telegram bot token.
 
 To start your application locally using Docker Compose, follow these steps:
 
-1. **Build the Docker Images** (if you have made changes to your Dockerfiles or need to rebuild the images):
+```bash
+docker-compose up -d
+```
 
-    ```bash
-   docker-compose build
-   ```
-   
-2. **Start the Containers:**
-     
-   ```bash
-   docker-compose up -d
-   ```
    
 This command starts the containers in detached mode. To view the logs, use `docker-compose logs -f`.

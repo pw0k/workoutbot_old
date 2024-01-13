@@ -1,7 +1,8 @@
 version: '3.5'
 services:
   app:
-    build: .
+    #build: .
+    image: pw0k/workoutbot:latest
     environment:
       WORKOUT_DATASOURCE_URL: ${WORKOUT_DATASOURCE_URL}
       WORKOUT_DB_USER: ${WORKOUT_DB_USER}
