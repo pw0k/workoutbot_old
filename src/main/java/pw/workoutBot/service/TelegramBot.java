@@ -24,8 +24,8 @@ public class TelegramBot extends TelegramLongPollingCommandBot {
     private String botName;
     @Value("${telegram.token}")
     private String token;
-    private List<BotCommand> botCommands;
-    private TelegramDbService telegramDbService;
+    private final List<BotCommand> botCommands;
+    private final TelegramDbService telegramDbService;
     Set<Long> chatIds = Set.of(-4034880397L);
 
     public TelegramBot(List<BotCommand> botCommands, TelegramDbService telegramDbService) {
@@ -60,6 +60,7 @@ public class TelegramBot extends TelegramLongPollingCommandBot {
                 WorkoutUser user = getUser(update);
                 Video video = getVideo(update);
                 telegramDbService.saveVideo(user, video);
+                log.info("wow, new video from user {}", user.getUserName());
             }
         }
     }

@@ -2,7 +2,6 @@
 
 WorkoutBot is designed for groups that share daily workout videos and want to track progress.
 
-
 ### Key Features
 
 - **Video Checking**: Members submit workout videos for accountability.
@@ -10,6 +9,15 @@ WorkoutBot is designed for groups that share daily workout videos and want to tr
 - **Statistics**: Generate weekly/monthly stats to track progress.
 
 WorkoutBot fosters a supportive fitness community for accountability and motivation.
+
+### Technical Specifications
+
+- Spring Boot
+- Telegram Bots Spring Boot Starter
+- Liquibase
+- GitHub Actions
+- Docker & Docker Hub
+- TestContainers
 
 ### Environment Variables for Local Startup
 
