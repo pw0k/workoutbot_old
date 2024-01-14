@@ -10,6 +10,7 @@ services:
       WORKOUT_DB_PASSWORD: ${WORKOUT_DB_PASSWORD}
       TELEGRAM_TOKEN: ${TELEGRAM_TOKEN}
       TELEGRAM_TEST_CHAT: ${TELEGRAM_TEST_CHAT}
+      TELEGRAM_GENERAL_CHAT: ${TELEGRAM_GENERAL_CHAT}
     restart: unless-stopped
     depends_on:
       - db
