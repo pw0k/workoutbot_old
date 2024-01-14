@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
+import pw.workoutBot.config.BotProperties;
 import pw.workoutBot.dto.VideoStatistic;
+import pw.workoutBot.service.TelegramBot;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,9 +24,13 @@ class VideoRepositoryTest extends AbstractPostgresContainer{
     private VideoRepository videoRepository;
     @Autowired
     private WorkoutUserRepository workoutUserRepository;
-    //for using fake TELEGRAM_TOKEN in ci/cd
+    //stub for Telegram API calls
     @MockBean
     private TelegramBotsApi mockTelegramBotsApi;
+    @MockBean
+    private BotProperties botProperties;
+    @MockBean
+    private TelegramBot telegramBot;
 
     @Test
     public void testFindVideoCountByUserBetweenDates() {
