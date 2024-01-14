@@ -33,7 +33,7 @@ public class TelegramBot extends TelegramLongPollingCommandBot {
         if (botCommands.isEmpty()) {
             log.error("Bot commands are missing!");
         }
-        this.chatIds = Set.of(botProperties.getGeneralChat(), botProperties.getTestChat());
+        this.chatIds = Set.of(Long.valueOf(botProperties.getGeneralChat()), botProperties.getTestChat());
         botCommands.forEach(this::register);
     }
 
