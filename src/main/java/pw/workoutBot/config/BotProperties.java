@@ -14,4 +14,12 @@ public class BotProperties {
     private String token;
     private Long testChat;
     private Long generalChat;
+
+    public void setGeneralChat(String generalChat) {
+        this.generalChat = Long.parseLong(generalChat);
+    }
+
+    public void setTestChat(String testChat) {
+        this.testChat = Long.parseLong(testChat);
+    }
 }
