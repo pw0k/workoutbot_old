@@ -17,6 +17,6 @@ public class WeeklyStatsScheduler {
 
     @Scheduled(cron = "0 0 13 * * SUN")
     public void generateAndSendWeeklyStats() {
-        statisticsService.calculateWeeklyStatistics(botProperties.getGeneralChat());
+        statisticsService.calculateWeeklyStatistics(Long.valueOf(botProperties.getGeneralChat()));
     }
 }

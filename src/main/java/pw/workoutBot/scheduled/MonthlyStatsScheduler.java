@@ -17,6 +17,6 @@ public class MonthlyStatsScheduler {
 
     @Scheduled(cron = "0 0 13 28-31 * ?")
     public void generateAndSendMonthlyStats() {
-        statisticsService.calculateMonthlyStatistics(botProperties.getGeneralChat());
+        statisticsService.calculateMonthlyStatistics(Long.valueOf(botProperties.getGeneralChat()));
     }
 }
