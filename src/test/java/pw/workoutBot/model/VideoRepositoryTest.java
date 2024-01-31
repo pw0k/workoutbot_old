@@ -26,7 +26,7 @@ class VideoRepositoryTest extends AbstractPostgresContainer{
     private WorkoutUserRepository workoutUserRepository;
     //stub for Telegram API calls
     @MockBean
-    private TelegramBotsApi mockTelegramBotsApi;
+    private TelegramBotsApi telegramBotsApi;
     @MockBean
     private BotProperties botProperties;
     @MockBean
@@ -73,4 +73,6 @@ class VideoRepositoryTest extends AbstractPostgresContainer{
                 .build();
         return workoutUserRepository.save(wk);
     }
+
+
 }

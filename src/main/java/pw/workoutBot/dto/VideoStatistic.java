@@ -8,5 +8,5 @@ import lombok.*;
 @Builder
 public class VideoStatistic {
     private String username;
-    private long videoCount;
+    private Long videoCount;
 }

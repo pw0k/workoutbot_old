@@ -8,6 +8,7 @@ import pw.workoutBot.model.VideoRepository;
 
 import java.time.*;
 import java.time.temporal.TemporalAdjusters;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +24,7 @@ public class StatisticsService {
         return videoRepository.findVideoCountByUserBetweenDates(startDateTime, endDateTime)
                 .stream()
                 .map(videoStat -> new VideoStatistic(videoStat.getUsername(), videoStat.getVideoCount()))
+                .sorted(Comparator.comparing(VideoStatistic::getVideoCount).reversed())
                 .collect(Collectors.toList());
     }
 
@@ -33,22 +35,23 @@ public class StatisticsService {
         LocalDateTime endOfWeek = LocalDateTime.of(nextSunday, LocalTime.of(13, 0));
         LocalDateTime startOfWeek = endOfWeek.minusDays(7);
         List<VideoStatistic> statistics = calculateStatistics(startOfWeek, endOfWeek);
-        telegramBot.sendMessage(chatId, "Stat for Week:\n" + convertMsg(statistics));
+        telegramBot.sendMessage(chatId, createMsg(statistics, "Week"));
     }
 
     public void calculateMonthlyStatistics(Long chatId) {
         LocalDateTime startOfMonth = YearMonth.now().atDay(1).atStartOfDay();
         LocalDateTime endOfMonth = YearMonth.now().atEndOfMonth().atTime(23, 59, 59);
         List<VideoStatistic> statistics = calculateStatistics(startOfMonth, endOfMonth);
-        telegramBot.sendMessage(chatId, "Stat for Month:\n" + convertMsg(statistics));
+        telegramBot.sendMessage(chatId, createMsg(statistics, "Month"));
     }
 
     public void calculateWeeklyStatisticsForTestChat() {
         calculateMonthlyStatistics(botProperties.getTestChat());
     }
 
-    private String convertMsg(List<VideoStatistic> statistics) {
+    private String createMsg(List<VideoStatistic> statistics, String duration) {
         StringBuilder sb = new StringBuilder();
+        sb.append("Stats for ").append(duration).append("\n#statsfor").append(duration).append("\n");
         for (var stat : statistics) {
             sb.append(stat.getUsername())
                     .append(" -> ")

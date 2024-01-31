@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component;
 import pw.workoutBot.config.BotProperties;
 import pw.workoutBot.service.StatisticsService;
 
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
+
 @Component
 @EnableScheduling
 @RequiredArgsConstructor
@@ -17,6 +20,13 @@ public class MonthlyStatsScheduler {
 
     @Scheduled(cron = "0 0 13 28-31 * ?")
     public void generateAndSendMonthlyStats() {
-        statisticsService.calculateMonthlyStatistics(botProperties.getGeneralChat());
+        if (isLastDayOfMonth(LocalDate.now())) {
+            statisticsService.calculateMonthlyStatistics(botProperties.getGeneralChat());
+        }
+    }
+
+     boolean isLastDayOfMonth(LocalDate date) {
+        LocalDate lastDayOfMonth = date.with(TemporalAdjusters.lastDayOfMonth());
+        return date.getDayOfMonth() == lastDayOfMonth.getDayOfMonth();
     }
 }
