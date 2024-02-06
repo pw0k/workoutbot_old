@@ -9,6 +9,10 @@ import pw.workoutBot.model.AbstractPostgresContainer;
 @SpringBootTest//(classes = WorkoutBotApplication.class)
 //class WorkoutBotApplicationTests extends AbstractPostgresContainer {
 class WorkoutBotApplicationTests extends AbstractPostgresContainer{
+
+//	@MockBean
+//	private TelegramBot telegramBot;
+
 	@Test
 	void contextLoads() {
 	}
