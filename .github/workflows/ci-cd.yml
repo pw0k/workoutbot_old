@@ -34,9 +34,6 @@ jobs:
           ls -la
           echo show build/libs/
           ls -la build/libs/
-      - name: Show contents of the target directory
-        run: ls -la target
-
 
 #      - name: Execute Gradle build
 #        uses: ./gradlew build --scan
