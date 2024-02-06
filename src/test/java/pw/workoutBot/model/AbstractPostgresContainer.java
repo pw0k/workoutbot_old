@@ -7,7 +7,8 @@ import org.testcontainers.containers.PostgreSQLContainer;
 
 public class AbstractPostgresContainer {
 
-    static final PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>("postgres:16.1");
+    static final PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>("postgres:16.1")
+            .withReuse(true);
 
     @DynamicPropertySource
     static void databaseProperties(DynamicPropertyRegistry registry) {
