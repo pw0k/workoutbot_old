@@ -24,14 +24,12 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v3
+#      - name: Setup Gradle
+#        uses: gradle/gradle-build-action@v3
 #        with:
 #          gradle-version: 7.6
-#      - name: Run build with Gradle Wrapper
-#        run:
-#
-#          ./gradlew build  --scan --warning-mode all
+      - name: Run build with Gradle Wrapper
+        run: ./gradlew build
 
 
 
