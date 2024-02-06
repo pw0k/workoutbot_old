@@ -28,7 +28,14 @@ jobs:
         uses: gradle/gradle-build-action@v3
       - name: Run build with Gradle Wrapper
         run: ./gradlew build
-
+      - name: Show contents of the current working directory
+        run: |
+          echo Show contents of the current working directory
+          ls -la
+          echo show build/libs/
+          ls -la build/libs/
+      - name: Show contents of the target directory
+        run: ls -la target
 
 
 #      - name: Execute Gradle build
