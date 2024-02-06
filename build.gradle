@@ -15,7 +15,6 @@ ext {
 	springVersion = '3.2.2'
 	testcontainersVersion = '1.19.3'
 	lombokVersion = '1.18.30'
-//	jupiterVersion = '5.10.1'
 }
 
 repositories {
@@ -32,8 +31,6 @@ dependencies {
 	testImplementation "org.springframework.boot:spring-boot-starter-test:${springVersion}"
 	testImplementation "org.testcontainers:junit-jupiter:${testcontainersVersion}"
 	testImplementation "org.testcontainers:postgresql:${testcontainersVersion}"
-//	testImplementation "org.junit.jupiter:junit-jupiter-api:${jupiterVersion}"
-//	testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${jupiterVersion}"
 
 	runtimeOnly 'org.postgresql:postgresql:42.7.1'
 
@@ -43,4 +40,10 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+test {
+	testLogging {
+		exceptionFormat = 'full'
+	}
 }
