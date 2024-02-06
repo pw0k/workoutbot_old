@@ -1,2 +1,2 @@
 #!/bin/sh
-exec java org.springframework.boot.loader.JarLauncher -Xmx256m
+exec java -Xmx256m org.springframework.boot.loader.JarLauncher
