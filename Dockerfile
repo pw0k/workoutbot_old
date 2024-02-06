@@ -10,5 +10,6 @@ COPY --from=builder application/dependencies/ ./
 COPY --from=builder application/spring-boot-loader/ ./
 COPY --from=builder application/snapshot-dependencies/ ./
 COPY --from=builder application/application/ ./
+#todo not working xmx if check "ps -ef" in docker container
 ENV JAVA_OPTS="-Xmx256m"
 ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS", "org.springframework.boot.loader.launch.JarLauncher"]
