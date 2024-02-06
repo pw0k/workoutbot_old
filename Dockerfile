@@ -10,5 +10,5 @@ COPY --from=builder application/dependencies/ ./
 COPY --from=builder application/spring-boot-loader/ ./
 COPY --from=builder application/snapshot-dependencies/ ./
 COPY --from=builder application/application/ ./
-ENTRYPOINT [ "/entrypoint.sh" ]
-#ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]
+ENV JAVA_OPTS="-Xmx256m"
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS", "org.springframework.boot.loader.launch.JarLauncher"]
