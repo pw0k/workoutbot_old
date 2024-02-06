@@ -63,7 +63,4 @@ jobs:
             curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -O https://raw.githubusercontent.com/pw0k/workoutbot/main/docker-compose.yml
             
             docker pull pw0k/workoutbot:latest
-#            todo not working as expected - db restart too
             docker-compose up --force-recreate -d app
-#            docker-compose down
-#            docker-compose up -d
