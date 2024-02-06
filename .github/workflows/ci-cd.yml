@@ -7,37 +7,34 @@ on:
     branches: [ main ]
 
 jobs:
-  build-and-deploy:
+  build-and-push:
     runs-on: ubuntu-latest
-    env:
-      WORKOUT_DATASOURCE_URL: jdbc:postgresql://localhost:54/workoutdb
-      WORKOUT_DB_USER: dummy
-      WORKOUT_DB_PASSWORD: dummy
-      TELEGRAM_TOKEN: TELEGRAM_TOKEN
-      TELEGRAM_TEST_CHAT: 666
-      TELEGRAM_GENERAL_CHAT: 666
+#    env:
+#      WORKOUT_DATASOURCE_URL: jdbc:postgresql://localhost:54/workoutdb
+#      WORKOUT_DB_USER: dummy
+#      WORKOUT_DB_PASSWORD: dummy
+#      TELEGRAM_TOKEN: TELEGRAM_TOKEN
+#      TELEGRAM_TEST_CHAT: 666
+#      TELEGRAM_GENERAL_CHAT: 666
     steps:
       - name: checkout
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'zulu'
-          cache: 'gradle'
-
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v3
-
-      #- name: Build with Gradle
-      #  run: ./gradlew build
+#      - name: Set up JDK 17
+#        uses: actions/setup-java@v4
+#        with:
+#          java-version: '17'
+#          distribution: 'zulu'
+#          cache: 'gradle'
+#
+#      - name: Setup Gradle
+#        uses: gradle/gradle-build-action@v3
 
       # https://paketo.io/docs/reference/java-reference/
       # todo как варик грузить в артифактори actions или собирать силами docker
       # мб будет эффективней и получиится сократить использование ram на VPS
-      - name: Build Docker Image
-        run: ./gradlew bootBuildImage
+#      - name: Build Docker Image
+#        run: ./gradlew bootBuildImage
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
@@ -45,9 +42,18 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Push Docker image to Docker Hub
-        run: docker push pw0k/workoutbot:latest
+#      - name: Push Docker image to Docker Hub
+#        run: docker push pw0k/workoutbot:latest
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: pw0k/workoutbot-bot:latest
 
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
       - name: Deploy to Server
         uses: appleboy/ssh-action@master
         with:
@@ -73,5 +79,3 @@ jobs:
             docker pull pw0k/workoutbot:latest
             docker-compose down
             docker-compose up -d
-        env:
-          DEBUG: true
