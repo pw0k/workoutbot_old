@@ -4,7 +4,8 @@ services:
     #build: .
     image: pw0k/workoutbot:latest
     environment:
-      JAVA_TOOL_OPTIONS: -Xmx300M -Xms250M -XX:MaxDirectMemorySize=10M -XX:MaxMetaspaceSize=100M -XX:ReservedCodeCacheSize=32M -Xss192K
+      #JAVA_TOOL_OPTIONS: -Xmx300M -Xms250M -XX:MaxDirectMemorySize=10M -XX:MaxMetaspaceSize=100M -XX:ReservedCodeCacheSize=32M -Xss192K
+      JAVA_TOOL_OPTIONS: -Xmx200M
       WORKOUT_DATASOURCE_URL: ${WORKOUT_DATASOURCE_URL}
       WORKOUT_DB_USER: ${WORKOUT_DB_USER}
       WORKOUT_DB_PASSWORD: ${WORKOUT_DB_PASSWORD}
