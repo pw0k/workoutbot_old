@@ -10,6 +10,7 @@ COPY --from=builder application/dependencies/ ./
 COPY --from=builder application/spring-boot-loader/ ./
 COPY --from=builder application/snapshot-dependencies/ ./
 COPY --from=builder application/application/ ./
-#ENV JAVA_OPTS="-Xmx256m"
+ENV JAVA_OPTS="-Xmx256m"
+#-XX:MaxRAMPercentage
 #ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS", "org.springframework.boot.loader.launch.JarLauncher"]
-ENTRYPOINT ["sh", "-c", "java", "org.springframework.boot.loader.launch.JarLauncher"]
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS  org.springframework.boot.loader.launch.JarLauncher"]
