@@ -55,10 +55,11 @@ public class TelegramBot extends TelegramLongPollingCommandBot {
                 Video video = getVideo(update);
                 telegramDbService.saveVideo(user, video);
                 log.info("wow, new video from user {}", user.getUserName());
+                return;
             }
-            if(Objects.equals(update.getMessage().getFrom().getUserName(), "monica_electronica")) {
-                log.warn("monica msg is " + update.getMessage().toString());
-            }
+            //todo delete after debugging
+            log.warn("user {} {}", update.getMessage().getFrom().getUserName()
+                    , update.getMessage().getFrom().getUserName() + update.getMessage().toString());
         }
     }
 
