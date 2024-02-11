@@ -4,6 +4,7 @@ ARG JAR_FILE=build/libs/*.jar
 COPY ${JAR_FILE} application.jar
 RUN java -Djarmode=layertools -jar application.jar extract
 
+#todo add jcmd to alphine ??
 FROM eclipse-temurin:17-jdk
 WORKDIR application
 COPY --from=builder application/dependencies/ ./

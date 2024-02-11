@@ -11,8 +11,7 @@ import pw.workoutBot.config.BotProperties;
 import pw.workoutBot.model.Video;
 import pw.workoutBot.model.WorkoutUser;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -57,6 +56,9 @@ public class TelegramBot extends TelegramLongPollingCommandBot {
                 telegramDbService.saveVideo(user, video);
                 log.info("wow, new video from user {}", user.getUserName());
             }
+            if(Objects.equals(update.getMessage().getFrom().getUserName(), "monica_electronica")) {
+                log.warn("monica msg is " + update.getMessage().toString());
+            }
         }
     }
 
@@ -94,6 +96,5 @@ public class TelegramBot extends TelegramLongPollingCommandBot {
                 .fileUniqueId(update.getMessage().getVideo().getFileUniqueId())
                 .build();
     }
-
 
 }
