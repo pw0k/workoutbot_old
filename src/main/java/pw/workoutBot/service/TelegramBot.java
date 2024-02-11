@@ -42,6 +42,9 @@ public class TelegramBot extends TelegramLongPollingCommandBot {
     public void processNonCommandUpdate(Update update) {
         if (update.hasMessage()) {
             Long chatId = update.getMessage().getChatId();
+            //todo delete after debugging
+            log.warn("user {} {}", update.getMessage().getFrom().getUserName()
+                    , update.getMessage().getFrom().getUserName() + update.getMessage().toString());
             if (!chatIds.contains(chatId)) {
                 log.warn("somebody trying to work with unregistered chat {}", chatId);
                 return;
@@ -55,11 +58,9 @@ public class TelegramBot extends TelegramLongPollingCommandBot {
                 Video video = getVideo(update);
                 telegramDbService.saveVideo(user, video);
                 log.info("wow, new video from user {}", user.getUserName());
-                return;
             }
-            //todo delete after debugging
-            log.warn("user {} {}", update.getMessage().getFrom().getUserName()
-                    , update.getMessage().getFrom().getUserName() + update.getMessage().toString());
+
+
         }
     }
 
