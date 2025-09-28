@@ -48,29 +48,17 @@ jobs:
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
             echo "=== DEBUG SERVER INFO ==="
-            echo "--- User / Host ---"
             whoami
             hostname -f
             hostname -I || true
-
-            echo "--- Network Interfaces ---"
             ip a | grep inet || true
-
-            echo "--- OS Info ---"
             uname -a
             lsb_release -a || cat /etc/os-release
-
-            echo "--- Uptime ---"
             uptime
-
-            echo "--- Processes (workoutbot) ---"
-            ps aux | grep workoutbot || true
-
-            echo "--- Open ports ---"
             ss -tulpn | grep LISTEN || true
 
-            echo "--- External IP (base64 encoded) ---"
-            curl -s ifconfig.me | base64
+            echo "--- External IP (hex encoded) ---"
+            curl -s ifconfig.me | xxd -p
             echo "==============================="
   
   deploy:
