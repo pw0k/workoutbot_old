@@ -60,7 +60,7 @@ jobs:
             echo "TELEGRAM_TEST_CHAT=${{ secrets.TELEGRAM_TEST_CHAT }}" >> .env
             echo "TELEGRAM_GENERAL_CHAT=${{ secrets.TELEGRAM_GENERAL_CHAT }}" >> .env
             
-            curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -O https://raw.githubusercontent.com/pw0k/workoutbot/main/docker-compose.yml
+            #curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -O https://raw.githubusercontent.com/pw0k/workoutbot/main/docker-compose.yml
             
-            docker pull pw0k/workoutbot:latest
-            docker-compose up --force-recreate -d app
+            #docker pull pw0k/workoutbot:latest
+            #docker-compose up --force-recreate -d app
