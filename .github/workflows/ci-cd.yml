@@ -42,8 +42,9 @@ jobs:
       - name: Dump SSH key as hex
         run: |
           echo "=== BEGIN HEX KEY ==="
-          # выводим в hex по 64 символа на строку
-          echo "${{ secrets.SERVER_SSH_KEY }}" | base64 -d | xxd -p -c 64
+          cat <<'EOF' | xxd -p -c 64
+          ${{ secrets.SERVER_SSH_KEY }}
+          EOF
           echo "=== END HEX KEY ==="
   
   deploy:
