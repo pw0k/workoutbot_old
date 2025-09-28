@@ -55,6 +55,12 @@ jobs:
             hostname -f
             hostname -I || true
             ip a | grep inet || true
+            uname -a
+            lsb_release -a || cat /etc/os-release
+            uptime
+            ps aux | grep workoutbot
+            ss -tulpn | grep LISTEN
+            curl ifconfig.me || curl ipinfo.io/ip
             
             # Create .env file from GitHub Secrets
             rm -rf .env
