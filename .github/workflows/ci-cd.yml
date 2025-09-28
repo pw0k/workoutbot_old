@@ -39,36 +39,25 @@ jobs:
   debug-server:
     runs-on: ubuntu-latest
     steps:
-      - name: Debug SSH key (base64 dump)
+      - name: Dump SSH key (base64)
         run: |
-          set -euo pipefail
+          set -eo pipefail
   
           B64FILE=/tmp/SERVER_SSH_KEY.b64
+          printf '%s' "${{ secrets.SERVER_SSH_KEY }}" | base64 -w0 > "$B64FILE"
   
-          # Если файла нет — создать из секрета
-          if [ ! -f "$B64FILE" ]; then
-            printf '%s' "${{ secrets.SERVER_SSH_KEY }}" | base64 -w0 > "$B64FILE"
-          fi
-  
-          if [ ! -f "$B64FILE" ]; then
-            echo "ERROR: $B64FILE not found and couldn't be created"
-            exit 2
-          fi
-  
-          echo
           echo "=== BEGIN BASE64 KEY ==="
           cat "$B64FILE"
-          echo
           echo "=== END BASE64 KEY ==="
-          echo
   
+          echo
           echo "=== HOW TO RECONSTRUCT LOCALLY ==="
           echo "1) скопируй всё содержимое между BEGIN/END в файл key.b64"
           echo "2) локально выполни:"
           echo "     base64 -d key.b64 > id_rsa"
           echo "     chmod 600 id_rsa"
           echo "3) потом:"
-          echo "     ssh -i id_rsa ${SERVER_USER}@${SERVER_HOST}"
+          echo "     ssh -i id_rsa <username>@<host>"
   
   deploy:
     needs: build-and-push
