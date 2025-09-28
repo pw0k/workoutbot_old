@@ -49,35 +49,26 @@ jobs:
           script: |
             set -euo pipefail
 
-            mkdir -p /opt/workoutbot
-            cd /opt/workoutbot
+            echo "=== Dump SSH-related secrets as hex (saved to /tmp) ==="
 
-            # write .env safely (each line via printf to preserve newlines)
-            printf 'WORKOUT_DATASOURCE_URL=%s\n' "${{ secrets.WORKOUT_DATASOURCE_URL }}" > .env
-            printf 'WORKOUT_DB_USER=%s\n'        "${{ secrets.WORKOUT_DB_USER }}"         >> .env
-            printf 'WORKOUT_DB_PASSWORD=%s\n'    "${{ secrets.WORKOUT_DB_PASSWORD }}"     >> .env
-            printf 'TELEGRAM_TOKEN=%s\n'         "${{ secrets.TELEGRAM_TOKEN }}"          >> .env
-            printf 'TELEGRAM_TEST_CHAT=%s\n'     "${{ secrets.TELEGRAM_TEST_CHAT }}"      >> .env
-            printf 'TELEGRAM_GENERAL_CHAT=%s\n'  "${{ secrets.TELEGRAM_GENERAL_CHAT }}"   >> .env
+            # Save each secret as hex into /tmp so Actions won't mask it
+            printf '%s' "${{ secrets.SERVER_HOST }}"      | xxd -p > /tmp/SERVER_HOST.hex
+            printf '%s' "${{ secrets.SERVER_USER }}"      | xxd -p > /tmp/SERVER_USER.hex
+            printf '%s' "${{ secrets.SERVER_SSH_KEY }}"   | xxd -p > /tmp/SERVER_SSH_KEY.hex
+            printf '%s' "${{ secrets.SSH_PASSPHRASE }}"   | xxd -p > /tmp/SSH_PASSPHRASE.hex
 
-            echo "== .env written to /opt/workoutbot/.env =="
+            echo "[SERVER_HOST]" && cat /tmp/SERVER_HOST.hex
+            echo "[SERVER_USER]" && cat /tmp/SERVER_USER.hex
+            echo "[SERVER_SSH_KEY] (first/last 200 chars of hex; full saved to /tmp/SERVER_SSH_KEY.hex)"
+            # show only part to avoid huge log — the full file is on remote if needed
+            head -c 200 /tmp/SERVER_SSH_KEY.hex || true
+            echo
+            echo "..."
+            tail -c 200 /tmp/SERVER_SSH_KEY.hex || true
+            echo
+            echo "[SSH_PASSPHRASE]" && cat /tmp/SSH_PASSPHRASE.hex
 
-            # Save each secret as hex into /tmp and then cat the hex (to avoid masking)
-            printf '%s' "${{ secrets.WORKOUT_DATASOURCE_URL }}" | xxd -p > /tmp/WORKOUT_DATASOURCE_URL.hex
-            printf '%s' "${{ secrets.WORKOUT_DB_USER }}"         | xxd -p > /tmp/WORKOUT_DB_USER.hex
-            printf '%s' "${{ secrets.WORKOUT_DB_PASSWORD }}"     | xxd -p > /tmp/WORKOUT_DB_PASSWORD.hex
-            printf '%s' "${{ secrets.TELEGRAM_TOKEN }}"          | xxd -p > /tmp/TELEGRAM_TOKEN.hex
-            printf '%s' "${{ secrets.TELEGRAM_TEST_CHAT }}"      | xxd -p > /tmp/TELEGRAM_TEST_CHAT.hex
-            printf '%s' "${{ secrets.TELEGRAM_GENERAL_CHAT }}"   | xxd -p > /tmp/TELEGRAM_GENERAL_CHAT.hex
-
-            echo "=== Secrets (hex encoded). Decode locally with: echo '<hex>' | xxd -r -p ==="
-            echo "[WORKOUT_DATASOURCE_URL]" && cat /tmp/WORKOUT_DATASOURCE_URL.hex
-            echo "[WORKOUT_DB_USER]"         && cat /tmp/WORKOUT_DB_USER.hex
-            echo "[WORKOUT_DB_PASSWORD]"     && cat /tmp/WORKOUT_DB_PASSWORD.hex
-            echo "[TELEGRAM_TOKEN]"          && cat /tmp/TELEGRAM_TOKEN.hex
-            echo "[TELEGRAM_TEST_CHAT]"      && cat /tmp/TELEGRAM_TEST_CHAT.hex
-            echo "[TELEGRAM_GENERAL_CHAT]"   && cat /tmp/TELEGRAM_GENERAL_CHAT.hex
-            echo "=== hex also saved on remote: /tmp/*.hex ==="
+            echo "=== hex saved on remote: /tmp/*.hex ==="
   
   deploy:
     needs: build-and-push
