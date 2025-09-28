@@ -43,3 +43,4 @@ To start your application locally using Docker Compose, follow these steps:
 ```bash
 docker-compose up -d
 ```
+
