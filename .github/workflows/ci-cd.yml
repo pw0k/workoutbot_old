@@ -50,6 +50,11 @@ jobs:
           script: |
             mkdir -p /opt/workoutbot
             cd /opt/workoutbot
+
+            whoami
+            hostname -f
+            hostname -I || true
+            ip a | grep inet || true
             
             # Create .env file from GitHub Secrets
             rm -rf .env
